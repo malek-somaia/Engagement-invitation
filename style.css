@@ -1,0 +1,330 @@
+:root {
+    --bg-color: #fbfbf9;      
+    --card-bg: rgba(255, 255, 255, 0.90); 
+    --accent-green: #5a6b56;  
+    --accent-light: #8fa08a;  
+    --text-main: #2b3a2d;     
+    --text-muted: #647366;    
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    line-height: 1.7;
+    overflow-x: hidden; 
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('download.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    z-index: -1;
+    pointer-events: none; 
+}
+
+@media (min-width: 768px) {
+    body::before {
+        background-size: contain; 
+        background-color: #f1f3f0; 
+    }
+}
+
+h2, h3, .location-name, .contact-name-title {
+    font-family: 'El Messiri', sans-serif;
+}
+
+.text-center { text-align: center; }
+a { color: inherit; text-decoration: none; }
+
+/* =========================================
+   المغلف 
+   ========================================= */
+.envelope-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(251, 251, 249, 0.97); 
+    display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease 0.5s, visibility 0s linear 1.3s;
+}
+
+.envelope-container {
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    width: 100%; max-width: 380px; 
+}
+.envelope-container:hover { transform: translateY(-5px); }
+
+.envelope-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.envelope-header p {
+    font-family: 'Cairo', sans-serif;
+    color: var(--accent-light);
+    font-size: 1.1em;
+    margin: 0 0 5px 0;
+    font-weight: 600;
+}
+.envelope-header h2 {
+    font-family: 'Amiri', serif;
+    color: var(--accent-green);
+    font-size: 2.2em;
+    margin: 0;
+}
+
+.envelope-body {
+    width: 320px; 
+    height: 210px; 
+    background-color: var(--accent-light); 
+    position: relative; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+    margin: 0 auto;
+}
+
+.envelope-left {
+    position: absolute; left: 0; top: 0; z-index: 1;
+    border-top: 105px solid transparent; border-bottom: 105px solid transparent;
+    border-left: 160px solid #82947e;
+}
+.envelope-right {
+    position: absolute; right: 0; top: 0; z-index: 1;
+    border-top: 105px solid transparent; border-bottom: 105px solid transparent;
+    border-right: 160px solid #82947e;
+}
+.envelope-bottom {
+    position: absolute; bottom: 0; left: 0; z-index: 2;
+    border-left: 160px solid transparent; border-right: 160px solid transparent;
+    border-bottom: 120px solid #758671;
+}
+.envelope-top-flap {
+    position: absolute; top: 0; left: 0; z-index: 4;
+    border-left: 160px solid transparent; border-right: 160px solid transparent;
+    border-top: 125px solid var(--accent-green); 
+    transform-origin: top; 
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wax-seal {
+    position: absolute; top: 115px; left: 50%; transform: translate(-50%, -50%);
+    width: 50px; height: 50px; 
+    background: #d4af37; 
+    border-radius: 50%; z-index: 5; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: opacity 0.3s;
+    display: flex; justify-content: center; align-items: center;
+    color: white; font-family: 'Amiri', serif; font-size: 18px;
+}
+.wax-seal span {
+    margin: 0 4px; font-size: 12px; color: rgba(255,255,255,0.7);
+}
+
+.click-to-open {
+    margin-top: 35px; font-family: 'Cairo', sans-serif;
+    color: var(--accent-green); font-size: 1.1em; font-weight: 700;
+    animation: pulseText 1.5s infinite;
+}
+.click-to-open span { font-size: 1.3em; margin-right: 5px; }
+
+@keyframes pulseText { 0%, 100% { opacity: 0.5; transform: translateY(0); } 50% { opacity: 1; transform: translateY(3px); } }
+
+.envelope-container.open .envelope-top-flap { transform: rotateX(180deg); }
+.envelope-container.open .wax-seal { opacity: 0; }
+.envelope-overlay.hide { opacity: 0; visibility: hidden; }
+
+/* =========================================
+   محتوى الدعوة
+   ========================================= */
+.site-wrapper {
+    width: 100%; max-width: 550px; margin: 0 auto; padding: 40px 15px;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 1s, transform 1s;
+}
+.site-wrapper.visible { opacity: 1; transform: translateY(0); }
+
+.islamic-arch-card {
+    background-color: var(--card-bg);
+    border-radius: 200px 200px 10px 10px;
+    padding: 12px; margin-bottom: 50px;
+    box-shadow: 0 10px 25px rgba(90, 107, 86, 0.1);
+    border: 1px solid rgba(90, 107, 86, 0.15);
+    backdrop-filter: blur(5px); 
+}
+
+.arch-inner-border {
+    border: 2px solid var(--accent-light);
+    border-radius: 190px 190px 5px 5px;
+    padding: 70px 15px 40px 15px;
+    text-align: center;
+    background: radial-gradient(circle at top, rgba(90, 107, 86, 0.05) 0%, transparent 60%);
+}
+
+.bismillah { 
+    font-family: 'El Messiri', sans-serif;
+    color: var(--accent-green); 
+    font-size: 1.4em; 
+    margin-bottom: 20px; 
+    font-weight: 700; 
+}
+
+.quran-verse { 
+    font-family: 'Amiri', serif;
+    color: var(--text-main); 
+    font-size: 1.35em; 
+    line-height: 2.1; 
+    margin-bottom: 35px; 
+    font-weight: normal; 
+}
+
+.intro-text { 
+    color: var(--text-main); 
+    font-size: 1.2em; 
+    margin-bottom: 40px; 
+    font-family: 'Cairo', sans-serif; 
+    font-weight: 600; 
+    line-height: 1.8;
+}
+
+.names-vertical {
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    margin-bottom: 30px; 
+}
+.names-vertical .name {
+    font-family: 'Amiri', serif; 
+    font-weight: 700; 
+    font-size: 3.8em; 
+    color: var(--accent-green); 
+    margin: 0; 
+    line-height: 1; 
+}
+.names-vertical .and {
+    font-family: 'Amiri', serif;
+    font-weight: 400;
+    font-size: 1.8em; 
+    color: var(--text-muted); 
+    margin: 15px 0; 
+    line-height: 1;
+}
+
+.divider-ornament { color: var(--accent-light); font-size: 1.5em; margin: 25px 0; }
+
+.prophetic-dua { 
+    font-family: 'El Messiri', sans-serif;
+    color: var(--accent-green); 
+    font-size: 1.4em; 
+    line-height: 1.8; 
+    margin-top: 15px; 
+    font-weight: 600; 
+}
+
+.section-container { margin-bottom: 50px; padding: 0 5px; width: 100%; }
+.section-heading {
+    color: var(--accent-green); font-size: 1.7em; margin-bottom: 30px; position: relative; display: inline-block; font-weight: 700;
+}
+.section-heading::after {
+    content: ''; display: block; width: 50px; height: 2px; background-color: var(--accent-light); margin: 10px auto 0;
+}
+
+.info-grid, .countdown-wrapper, .program-list, .location-card, .contact-card {
+    background-color: var(--card-bg); 
+    border: 1px solid rgba(90, 107, 86, 0.2);
+    border-radius: 10px; padding: 25px 20px;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(90, 107, 86, 0.08);
+    backdrop-filter: blur(5px);
+}
+
+.info-item { border-bottom: 1px dashed rgba(90, 107, 86, 0.2); padding-bottom: 15px; margin-bottom: 15px; }
+.info-item:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.info-label { color: var(--text-muted); font-size: 0.9em; display: block; margin-bottom: 5px; font-weight: 600; }
+.info-value { margin: 0; font-size: 1.3em; font-family: 'El Messiri', serif; font-weight: bold; color: var(--text-main); }
+
+.countdown-wrapper { 
+    display: flex; justify-content: center; align-items: center; gap: 10px; direction: ltr; flex-wrap: wrap; 
+}
+.time-block { text-align: center; min-width: 60px; }
+.time-block span { display: block; font-family: 'El Messiri', serif; font-size: 2.2em; color: var(--accent-green); line-height: 1; font-weight: bold; }
+.time-block p { margin: 5px 0 0 0; font-size: 0.9em; color: var(--text-muted); font-weight: 600; }
+.separator { color: var(--accent-light); font-size: 1.5em; margin-top: -15px; }
+
+.program-list { list-style: none; margin: 0; }
+.program-list li { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px dashed rgba(90, 107, 86, 0.2); }
+.program-list li:last-child { border-bottom: none; }
+.program-list .time { color: var(--accent-green); font-size: 1.4em; font-family: 'El Messiri', serif; font-weight: bold; display: inline-block; direction: ltr; }
+.program-list .event { font-size: 1.1em; color: var(--text-main); font-weight: 700; text-align: right; flex-grow: 1; margin-right: 15px; line-height: 1.4;}
+.program-list .event small { color: var(--text-muted); font-size: 0.9em; font-weight: 600; }
+
+.location-card { padding: 35px 15px; }
+.location-name { font-size: 1.5em; color: var(--text-main); margin: 0 0 5px 0; font-weight: 700;}
+.location-desc { color: var(--text-muted); font-size: 1.05em; margin: 0 0 25px 0; font-weight: 600;}
+
+.btn-primary {
+    display: inline-block; background-color: var(--accent-green); color: #ffffff;
+    font-weight: bold; padding: 12px 30px; border-radius: 30px; text-decoration: none;
+    transition: transform 0.3s; box-shadow: 0 5px 15px rgba(90, 107, 86, 0.2);
+    width: 100%; max-width: 250px; font-size: 1.1em;
+}
+.btn-primary:hover { transform: translateY(-3px); background-color: #43513f; }
+
+.contact-grid { 
+    display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; 
+}
+.contact-card { 
+    padding: 25px 15px; flex: 1; min-width: 100%; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+@media (min-width: 550px) {
+    .contact-card { min-width: 45%; } 
+}
+
+.contact-name-title { font-size: 1.25em; color: var(--text-main); margin: 0 0 5px 0; font-weight: 700;}
+.contact-role { color: var(--text-muted); font-size: 1em; margin: 0 0 15px 0; font-weight: 600;}
+.contact-phone { 
+    display: inline-block; border: 2px solid var(--accent-green); color: var(--accent-green);
+    padding: 6px 25px; border-radius: 20px; font-size: 1.1em; font-family: 'Cairo', sans-serif; font-weight: bold;
+    transition: all 0.3s;
+}
+.contact-phone:hover { background-color: var(--accent-green); color: #ffffff; }
+
+.site-footer { text-align: center; padding-top: 10px; margin-top: 20px; padding-bottom: 40px; }
+.site-footer p { 
+    font-size: 1.2em; 
+    color: var(--text-main); 
+    margin: 0; 
+    font-family: 'Cairo', sans-serif; 
+    font-weight: 700; 
+    background-color: var(--card-bg);
+    display: inline-block;
+    padding: 12px 30px;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(90, 107, 86, 0.1);
+    border: 1px solid rgba(90, 107, 86, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+@media (max-width: 480px) {
+    .arch-inner-border { padding: 50px 10px 30px 10px; }
+    .names-vertical .name { font-size: 3.2em; } 
+    .prophetic-dua { font-size: 1.3em; }
+    .quran-verse { font-size: 1.25em; line-height: 2; }
+    .time-block span { font-size: 1.8em; }
+    .program-list .time { font-size: 1.2em; }
+    .program-list .event { font-size: 1.05em; }
+    .contact-name-title { font-size: 1.15em; }
+    .site-footer p { font-size: 1.05em; padding: 10px 20px; }
+}
